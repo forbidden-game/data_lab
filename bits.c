@@ -182,12 +182,11 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-	int eightOddBits = 0xAA;
-	int l0 = x & eightOddBits;
-	int l1 = x >> 8 & eightOddBits;
-	int l2 = x >> 16 & eightOddBits;
-	int l3 = x >> 24 & eightOddBits;
-	return !((l0 & l1 & l2 & l3) ^ eightOddBits);
+	x = (x >> 16) & x;
+	x = (x >> 8) & x;
+	x = (x >> 4) & x;
+	x = (x >> 2) & x;
+	return (x >> 1) & 1;
 }
 /* 
  * negate - return -x 
@@ -262,7 +261,25 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  return 0;
+	int a, b, c, d, e, f;
+	x = (x >> 31) ^ x;
+
+	a = !!(x >> 16) << 4;
+	x = x >> a;
+
+	b = !!(x >> 8) << 3;
+	x = x >> b;
+
+	c = !!(x >> 4) << 2;
+	x = x >> c;
+
+	d = !!(x >> 2) << 1;
+	x = x >> d;
+
+	e = !!(x >> 1);
+	x = x >> e;
+	f = x;
+	return a + b + c + d + e + f + 1;
 }
 //float
 /* 
